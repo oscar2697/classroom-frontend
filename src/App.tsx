@@ -13,10 +13,12 @@ import { useNotificationProvider } from "./components/refine-ui/notification/use
 import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 import { dataProvider } from "./providers/data";
 import Dashboard from "./pages/dashboard";
-import { Dumbbell, Home } from "lucide-react";
+import { Dumbbell, Home, LandPlot } from "lucide-react";
 import { Layout } from "./components/refine-ui/layout/layout";
 import WorkoutsList from "./pages/workouts/list";
 import WorkoutsCreate from "./pages/workouts/create";
+import WorkoutsSessionList from "./pages/classes/list";
+import WorkoutsSessionCreate from "./pages/classes/create";
 
 function App() {
   return (
@@ -44,7 +46,13 @@ function App() {
                   list: '/workouts',
                   create: '/workouts/create',
                   meta: { label: 'Workouts', icon: <Dumbbell /> }
-                }
+                },
+                {
+                  name: 'classes',
+                  list: '/sessions',
+                  create: '/sessions/create',
+                  meta: { label: 'Workouts Sessions', icon: <LandPlot /> }
+                },
               ]}
             >
 
@@ -61,6 +69,11 @@ function App() {
                   <Route path="workouts" >
                     <Route index element={<WorkoutsList />} />
                     <Route path="create" element={<WorkoutsCreate />} />
+                  </Route>
+
+                  <Route path="sessions" >
+                    <Route index element={<WorkoutsSessionList />} />
+                    <Route path="create" element={<WorkoutsSessionCreate />} />
                   </Route>
                 </Route>
               </Routes>
