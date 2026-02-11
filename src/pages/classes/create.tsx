@@ -189,7 +189,7 @@ const WorkoutsSessionCreate = () => {
                                                 </FormLabel>
 
                                                 <Select
-                                                    onValueChange={(value) => field.onChange(Number(value))}
+                                                    onValueChange={field.onChange}
                                                     value={field?.value?.toString()}
                                                 >
                                                     <FormControl>
