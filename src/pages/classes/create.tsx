@@ -3,7 +3,7 @@ import { CreateView } from '@/components/refine-ui/views/create-view'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { useBack } from '@refinedev/core'
+import { useBack, useList } from '@refinedev/core'
 import { useForm } from "@refinedev/react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { workoutSessionSchema } from '@/lib/schema'
@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { Loader2 } from 'lucide-react'
 import UploadWidget from '@/components/upload-widget'
+import { User, Workout } from '@/types'
 
 const WorkoutsSessionCreate = () => {
     const back = useBack()
@@ -27,57 +28,47 @@ const WorkoutsSessionCreate = () => {
         },
     })
 
-    const { handleSubmit, formState: { isSubmitting, errors }, control } = form
+    const {
+        refineCore: { onFinish },
+        handleSubmit,
+        formState: { isSubmitting, errors },
+        control
+    } = form
 
-    const onSubmit = (values: z.infer<typeof workoutSessionSchema>) => {
+    const onSubmit = async (values: z.infer<typeof workoutSessionSchema>) => {
         try {
-            console.log(values)
+            await onFinish(values)
         } catch (error) {
             console.log('Error creating workout session', error)
         }
     }
 
-    const trainers = [
-        {
-            id: "1",
-            name: "Carlos Mendoza",
-        },
-        {
-            id: "2",
-            name: "Laura Fernández",
-        },
-        {
-            id: "3",
-            name: "Miguel Rojas",
-        },
-    ]
+    const { query: workoutsQuery } = useList<Workout>({
+        resource: 'workouts',
+        pagination: {
+            pageSize: 100
+        }
+    })
 
-    const workouts = [
-        {
-            id: 1,
-            name: "Kung Fu Fundamentals",
-            code: "KF-BAS-001",
-            department: "Kung Fu",
-        },
-        {
-            id: 2,
-            name: "Karate Strength Training",
-            code: "KK-STR-001",
-            department: "Karate",
-        },
-        {
-            id: 3,
-            name: "MMA Combat Conditioning",
-            code: "MMA-COM-001",
-            department: "Mixed Martial Arts",
-        },
-        {
-            id: 4,
-            name: "Brazilian Jiu-Jitsu Basics",
-            code: "BJJ-BAS-001",
-            department: "Brazilian Jiu-Jitsu",
-        },
-    ];
+    const { query: trainersQuery } = useList<User>({
+        resource: 'users',
+        filters: [
+            {
+                field: 'role',
+                operator: 'eq',
+                value: 'trainer'
+            }
+        ],
+        pagination: {
+            pageSize: 100
+        }
+    })
+
+    const workouts = workoutsQuery.data?.data || []
+    const workoutsLoading = workoutsQuery.isLoading
+
+    const trainers = trainersQuery.data?.data || []
+    const trainersLoading = workoutsQuery.isLoading
 
     const bannerPublicId = form.watch('bannerCldPubId')
 
@@ -191,6 +182,7 @@ const WorkoutsSessionCreate = () => {
                                                 <Select
                                                     onValueChange={field.onChange}
                                                     value={field?.value?.toString()}
+                                                    disabled={workoutsLoading}
                                                 >
                                                     <FormControl>
                                                         <SelectTrigger className='w-full'>
@@ -230,6 +222,7 @@ const WorkoutsSessionCreate = () => {
                                                 <Select
                                                     onValueChange={(value) => field.onChange(Number(value))}
                                                     value={field?.value?.toString()}
+                                                    disabled={trainersLoading}
                                                 >
                                                     <FormControl>
                                                         <SelectTrigger className='w-full'>

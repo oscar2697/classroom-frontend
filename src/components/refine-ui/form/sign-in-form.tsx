@@ -1,11 +1,9 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-
-import { CircleHelp } from "lucide-react";
-
-import { InputPassword } from "@/components/refine-ui/form/input-password";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { CircleHelp } from "lucide-react"
+import { InputPassword } from "@/components/refine-ui/form/input-password"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -13,45 +11,45 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import { useLink, useLogin, useRefineOptions } from "@refinedev/core";
+} from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
+import { useLink, useLogin, useRefineOptions } from "@refinedev/core"
 
 export const SignInForm = () => {
-  const [rememberMe, setRememberMe] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
-  const Link = useLink();
+  const Link = useLink()
 
-  const { title } = useRefineOptions();
+  const { title } = useRefineOptions()
 
-  const { mutate: login } = useLogin();
+  const { mutate: login } = useLogin()
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
     login({
       email,
       password,
-    });
-  };
+    })
+  }
 
   const handleSignInWithGoogle = () => {
     login({
       providerName: "google",
-    });
-  };
+    })
+  }
 
   const handleSignInWithGitHub = () => {
     login({
       providerName: "github",
-    });
-  };
+    })
+  }
 
   return (
     <div
@@ -87,6 +85,7 @@ export const SignInForm = () => {
           >
             Sign in
           </CardTitle>
+
           <CardDescription
             className={cn("text-muted-foreground", "font-medium")}
           >
@@ -100,6 +99,7 @@ export const SignInForm = () => {
           <form onSubmit={handleSignIn}>
             <div className={cn("flex", "flex-col", "gap-2")}>
               <Label htmlFor="email">Email</Label>
+
               <Input
                 id="email"
                 type="email"
@@ -113,6 +113,7 @@ export const SignInForm = () => {
               className={cn("relative", "flex", "flex-col", "gap-2", "mt-6")}
             >
               <Label htmlFor="password">Password</Label>
+
               <InputPassword
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -136,8 +137,10 @@ export const SignInForm = () => {
                     setRememberMe(checked === "indeterminate" ? false : checked)
                   }
                 />
+
                 <Label htmlFor="remember">Remember me</Label>
               </div>
+
               <Link
                 to="/forgot-password"
                 className={cn(
@@ -151,6 +154,7 @@ export const SignInForm = () => {
                 )}
               >
                 <span>Forgot password</span>
+
                 <CircleHelp className={cn("w-4", "h-4")} />
               </Link>
             </div>
@@ -161,12 +165,15 @@ export const SignInForm = () => {
 
             <div className={cn("flex", "items-center", "gap-4", "mt-6")}>
               <Separator className={cn("flex-1")} />
+
               <span className={cn("text-sm", "text-muted-foreground")}>or</span>
+
               <Separator className={cn("flex-1")} />
             </div>
 
             <div className={cn("flex", "flex-col", "gap-4", "mt-6")}>
               <p className={cn("text-sm", "font-medium")}>Sign in using</p>
+
               <div className={cn("grid grid-cols-2", "gap-6")}>
                 <Button
                   variant="outline"
@@ -189,6 +196,7 @@ export const SignInForm = () => {
 
                   <div>Google</div>
                 </Button>
+
                 <Button
                   variant="outline"
                   className={cn("flex", "items-center", "gap-2")}
@@ -238,7 +246,7 @@ export const SignInForm = () => {
         </CardFooter>
       </Card>
     </div>
-  );
-};
+  )
+}
 
-SignInForm.displayName = "SignInForm";
+SignInForm.displayName = "SignInForm" 

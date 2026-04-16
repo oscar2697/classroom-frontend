@@ -1,9 +1,8 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-
-import { InputPassword } from "@/components/refine-ui/form/input-password";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { InputPassword } from "@/components/refine-ui/form/input-password"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -11,33 +10,33 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
 import {
   useLink,
   useNotification,
   useRefineOptions,
   useRegister,
-} from "@refinedev/core";
+} from "@refinedev/core"
 
 export const SignUpForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
 
-  const { open } = useNotification();
+  const { open } = useNotification()
 
-  const Link = useLink();
+  const Link = useLink()
 
-  const { title } = useRefineOptions();
+  const { title } = useRefineOptions()
 
-  const { mutate: register } = useRegister();
+  const { mutate: register } = useRegister()
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (password !== confirmPassword) {
       open?.({
@@ -45,28 +44,28 @@ export const SignUpForm = () => {
         message: "Passwords don't match",
         description:
           "Please make sure both password fields contain the same value.",
-      });
+      })
 
-      return;
+      return
     }
 
     register({
       email,
       password,
-    });
-  };
+    })
+  }
 
   const handleSignUpWithGoogle = () => {
     register({
       providerName: "google",
-    });
-  };
+    })
+  }
 
   const handleSignUpWithGitHub = () => {
     register({
       providerName: "github",
-    });
-  };
+    })
+  }
 
   return (
     <div
@@ -102,6 +101,7 @@ export const SignUpForm = () => {
           >
             Sign up
           </CardTitle>
+
           <CardDescription
             className={cn("text-muted-foreground", "font-medium")}
           >
@@ -115,6 +115,7 @@ export const SignUpForm = () => {
           <form onSubmit={handleSignUp}>
             <div className={cn("flex", "flex-col", "gap-2")}>
               <Label htmlFor="email">Email</Label>
+
               <Input
                 id="email"
                 type="email"
@@ -129,6 +130,7 @@ export const SignUpForm = () => {
               className={cn("relative", "flex", "flex-col", "gap-2", "mt-6")}
             >
               <Label htmlFor="password">Password</Label>
+
               <InputPassword
                 id="password"
                 value={password}
@@ -141,6 +143,7 @@ export const SignUpForm = () => {
               className={cn("relative", "flex", "flex-col", "gap-2", "mt-6")}
             >
               <Label htmlFor="confirmPassword">Confirm password</Label>
+
               <InputPassword
                 id="confirmPassword"
                 value={confirmPassword}
@@ -165,7 +168,9 @@ export const SignUpForm = () => {
 
             <div className={cn("flex", "items-center", "gap-4", "mt-6")}>
               <Separator className={cn("flex-1")} />
+
               <span className={cn("text-sm", "text-muted-foreground")}>or</span>
+
               <Separator className={cn("flex-1")} />
             </div>
 
@@ -189,8 +194,10 @@ export const SignUpForm = () => {
                       fill="currentColor"
                     />
                   </svg>
+
                   <div>Google</div>
                 </Button>
+
                 <Button
                   variant="outline"
                   className={cn("flex", "items-center", "gap-2")}
@@ -211,6 +218,7 @@ export const SignUpForm = () => {
                       fill="currentColor"
                     />
                   </svg>
+
                   <div>GitHub</div>
                 </Button>
               </div>
@@ -222,9 +230,11 @@ export const SignUpForm = () => {
 
         <CardFooter>
           <div className={cn("w-full", "text-center text-sm")}>
+
             <span className={cn("text-sm", "text-muted-foreground")}>
               Have an account?{" "}
             </span>
+
             <Link
               to="/login"
               className={cn(
@@ -240,7 +250,7 @@ export const SignUpForm = () => {
         </CardFooter>
       </Card>
     </div>
-  );
-};
+  )
+}
 
-SignUpForm.displayName = "SignUpForm";
+SignUpForm.displayName = "SignUpForm"
