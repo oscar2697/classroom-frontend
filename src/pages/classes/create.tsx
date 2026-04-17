@@ -23,7 +23,7 @@ const WorkoutsSessionCreate = () => {
     const form = useForm({
         resolver: zodResolver(workoutSessionSchema),
         refineCoreProps: {
-            resource: 'workouts-sessions',
+            resource: 'classes',
             action: 'create',
         },
     })
@@ -68,7 +68,7 @@ const WorkoutsSessionCreate = () => {
     const workoutsLoading = workoutsQuery.isLoading
 
     const trainers = trainersQuery.data?.data || []
-    const trainersLoading = workoutsQuery.isLoading
+    const trainersLoading = trainersQuery.isLoading
 
     const bannerPublicId = form.watch('bannerCldPubId')
 
