@@ -71,7 +71,7 @@ function App() {
                     <Route path="create" element={<WorkoutsCreate />} />
                   </Route>
 
-                  <Route path="sessions" >
+                  <Route path="classes" >
                     <Route index element={<WorkoutsSessionList />} />
                     <Route path="create" element={<WorkoutsSessionCreate />} />
                   </Route>
