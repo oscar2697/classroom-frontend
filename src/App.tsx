@@ -49,8 +49,8 @@ function App() {
                 },
                 {
                   name: 'classes',
-                  list: '/sessions',
-                  create: '/sessions/create',
+                  list: '/classes',
+                  create: '/classes/create',
                   meta: { label: 'Workouts Sessions', icon: <LandPlot /> }
                 },
               ]}
