@@ -42,6 +42,12 @@ const options: CreateDataProviderOptions = {
           if (field === 'department') params.department = value
           if (field === 'name' || field === 'code') params.search = value
         }
+
+        if (resource === 'workouts-sessions') {
+          if (field === 'name') params.search = value
+          if (field === 'workouts') params.workouts = value
+          if (field === 'trainer') params.trainer = value
+        }
       })
 
       return params

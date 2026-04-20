@@ -48,7 +48,7 @@ function App() {
                   meta: { label: 'Workouts', icon: <Dumbbell /> }
                 },
                 {
-                  name: 'classes',
+                  name: 'workouts-sessions',
                   list: '/sessions',
                   create: '/sessions/create',
                   meta: { label: 'Workouts Sessions', icon: <LandPlot /> }
