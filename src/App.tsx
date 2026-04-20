@@ -49,8 +49,8 @@ function App() {
                 },
                 {
                   name: 'classes',
-                  list: '/classes',
-                  create: '/classes/create',
+                  list: '/sessions',
+                  create: '/sessions/create',
                   meta: { label: 'Workouts Sessions', icon: <LandPlot /> }
                 },
               ]}
@@ -71,7 +71,7 @@ function App() {
                     <Route path="create" element={<WorkoutsCreate />} />
                   </Route>
 
-                  <Route path="classes" >
+                  <Route path="sessions" >
                     <Route index element={<WorkoutsSessionList />} />
                     <Route path="create" element={<WorkoutsSessionCreate />} />
                   </Route>
