@@ -220,8 +220,8 @@ const WorkoutsSessionCreate = () => {
                                                 </FormLabel>
 
                                                 <Select
-                                                    onValueChange={(value) => field.onChange(Number(value))}
-                                                    value={field?.value?.toString()}
+                                                    onValueChange={field.onChange}
+                                                    value={field.value?.toString()}
                                                     disabled={trainersLoading}
                                                 >
                                                     <FormControl>
@@ -235,8 +235,8 @@ const WorkoutsSessionCreate = () => {
                                                     <SelectContent>
                                                         {trainers.map((trainer) => (
                                                             <SelectItem
-                                                                value={trainer.id.toString()}
                                                                 key={trainer.id}
+                                                                value={trainer.id}
                                                             >
                                                                 {trainer.name}
                                                             </SelectItem>
