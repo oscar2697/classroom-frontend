@@ -23,7 +23,7 @@ const WorkoutsSessionCreate = () => {
     const form = useForm({
         resolver: zodResolver(workoutSessionSchema),
         refineCoreProps: {
-            resource: 'classes',
+            resource: 'workouts-sessions',
             action: 'create',
         },
     })
