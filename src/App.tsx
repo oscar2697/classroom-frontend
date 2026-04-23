@@ -19,6 +19,7 @@ import WorkoutsList from "./pages/workouts/list";
 import WorkoutsCreate from "./pages/workouts/create";
 import WorkoutsSessionList from "./pages/classes/list";
 import WorkoutsSessionCreate from "./pages/classes/create";
+import WorkoutsSessionShow from "./pages/classes/show";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
                   name: 'workouts-sessions',
                   list: '/sessions',
                   create: '/sessions/create',
+                  show: '/sessions/show/:id',
                   meta: { label: 'Workouts Sessions', icon: <LandPlot /> }
                 },
               ]}
@@ -74,6 +76,7 @@ function App() {
                   <Route path="sessions" >
                     <Route index element={<WorkoutsSessionList />} />
                     <Route path="create" element={<WorkoutsSessionCreate />} />
+                    <Route path="show/:id" element={<WorkoutsSessionShow />} />
                   </Route>
                 </Route>
               </Routes>
