@@ -142,7 +142,7 @@ const WorkoutsSessionList = () => {
             cell: ({ row }) => {
                 return (
                     <ShowButton
-                        resource='sessions'
+                        resource='workouts-sessions'
                         recordItemId={row.original.id}
                         variant='outline'
                         size='sm'
