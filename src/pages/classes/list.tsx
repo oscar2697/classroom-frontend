@@ -11,6 +11,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Search } from "lucide-react"
 import { useMemo, useState } from "react"
 import { WorkoutSession, User, Workout } from '@/types'
+import { ShowButton } from "@/components/refine-ui/buttons/show"
 
 const WorkoutsSessionList = () => {
     const [searchQuery, setSearchQuery] = useState('')
@@ -106,14 +107,14 @@ const WorkoutsSessionList = () => {
             }
         },
         {
-            id: 'subject',
+            id: 'workout',
             accessorKey: 'workout.name',
             size: 150,
             header: () => <p className="column-title ml-2">Workout</p>,
             cell: ({ getValue }) => <span className="text-foreground">{getValue<string>()}</span>
         },
         {
-            id: 'teacher',
+            id: 'trainer',
             accessorKey: 'trainer.name',
             size: 150,
             header: () => <p className="column-title ml-2">Trainer</p>,
@@ -126,6 +127,23 @@ const WorkoutsSessionList = () => {
             header: () => <p className="column-title ml-2">Capacity</p>,
             cell: ({ getValue }) => <span className="text-foreground">{getValue<number>()}</span>
         },
+        {
+            id: 'details',
+            size: 140,
+            header: () => <p className="column-title">Details</p>,
+            cell: ({ row }) => {
+                return (
+                    <ShowButton
+                        resource='sessions'
+                        recordItemId={row.original.id}
+                        variant='outline'
+                        size='sm'
+                    >
+                        View
+                    </ShowButton>
+                )
+            }
+        }
     ], [])
 
     const sessionsTable = useTable<WorkoutSession>({
