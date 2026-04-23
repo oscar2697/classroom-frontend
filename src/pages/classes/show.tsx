@@ -9,7 +9,7 @@ import { AdvancedImage } from "@cloudinary/react"
 import { bannerPhoto } from "@/lib/cloudinary"
 
 const Show = () => {
-    const { query } = useShow<WorkoutSession>({ resource: 'workout' })
+    const { query } = useShow<WorkoutSession>({ resource: 'workouts-sessions' })
     const workoutsDetails = query.data?.data
     const { isLoading, isError } = query
 

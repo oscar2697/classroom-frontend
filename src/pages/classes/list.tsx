@@ -115,8 +115,8 @@ const WorkoutsSessionList = () => {
             }
         },
         {
-            id: 'workoutType',
-            accessorKey: 'workoutType',
+            id: 'workout',
+            accessorKey: 'workout.name',
             size: 150,
             header: () => <p className="column-title ml-2">Workout</p>,
             cell: ({ getValue }) => <span className="text-foreground">{getValue<string>()}</span>
