@@ -50,7 +50,7 @@ const WorkoutsSessionList = () => {
         const data = trainersQuery?.data
         return Array.isArray(data) ? data : []
     }, [trainersQuery?.data])
-
+    
     const isLoadingTrainers = trainersQuery?.isLoading
 
     const workoutFilters = selectedWorkout === 'all' ? [] : [
@@ -80,7 +80,7 @@ const WorkoutsSessionList = () => {
     const classColumns = useMemo<ColumnDef<WorkoutSession>[]>(() => [
         {
             id: 'bannerUrl',
-            accessorFn: 'bannerUrl',
+            accessorKey: 'bannerUrl',
             size: 80,
             header: () => <p className="column-title ml-2">Banner</p>,
             cell: ({ getValue }) => (
@@ -95,14 +95,14 @@ const WorkoutsSessionList = () => {
         },
         {
             id: 'name',
-            accessorFn: 'name',
+            accessorKey: 'name',
             size: 200,
             header: () => <p className="column-title ml-2">Session Name</p>,
             cell: ({ getValue }) => <span className="text-foreground font-medium">{getValue<string>()}</span>
         },
         {
             id: 'status',
-            accessorFn: 'status',
+            accessorKey: 'status',
             size: 100,
             header: () => <p className="column-title ml-2">Status</p>,
             cell: ({ getValue }) => {
@@ -115,22 +115,22 @@ const WorkoutsSessionList = () => {
             }
         },
         {
-            id: 'workout',
-            accessorFn: 'workout.name',
+            id: 'workoutType',
+            accessorKey: 'workoutType',
             size: 150,
             header: () => <p className="column-title ml-2">Workout</p>,
             cell: ({ getValue }) => <span className="text-foreground">{getValue<string>()}</span>
         },
         {
             id: 'trainer',
-            accessorFn: 'trainer.name',
+            accessorKey: 'trainer.name',
             size: 150,
             header: () => <p className="column-title ml-2">Trainer</p>,
             cell: ({ getValue }) => <span className="text-foreground">{getValue<string>()}</span>
         },
         {
             id: 'capacity',
-            accessorFn: 'capacity',
+            accessorKey: 'capacity',
             size: 100,
             header: () => <p className="column-title ml-2">Capacity</p>,
             cell: ({ getValue }) => <span className="text-foreground">{getValue<number>()}</span>
