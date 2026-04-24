@@ -25,9 +25,12 @@ import {
   useLink,
   useMenu,
   useRefineOptions,
+  useLogout,
+  useActiveAuthProvider,
+  useGetIdentity,
   type TreeMenuItem,
 } from "@refinedev/core";
-import { ChevronRight, ListIcon } from "lucide-react";
+import { ChevronRight, ListIcon, LogOut, Settings } from "lucide-react";
 import React from "react";
 
 export function Sidebar() {
@@ -55,13 +58,21 @@ export function Sidebar() {
           }
         )}
       >
-        {menuItems.map((item: TreeMenuItem) => (
-          <SidebarItem
-            key={item.key || item.name}
-            item={item}
-            selectedKey={selectedKey}
-          />
-        ))}
+        {/* Navigation items will be rendered here */}
+        <div className="flex-1">
+          {menuItems && menuItems.map((item: any) => (
+            <SidebarItem
+              key={item.key || item.name}
+              item={item}
+              selectedKey={selectedKey}
+            />
+          ))}
+        </div>
+        
+        {/* Add logout section at bottom */}
+        <div className="mt-auto border-t border-border pt-4">
+          <SimpleLogoutButton />
+        </div>
       </ShadcnSidebarContent>
     </ShadcnSidebar>
   );
@@ -340,10 +351,10 @@ function SidebarButton({
       variant="ghost"
       size="lg"
       className={cn(
-        "flex w-full items-center justify-start gap-2 py-2 !px-3 text-sm",
+        "flex w-full items-center justify-start gap-2 py-2 px-3 text-sm",
         {
           "bg-sidebar-primary": isSelected,
-          "hover:!bg-sidebar-primary/90": isSelected,
+          "hover:bg-sidebar-primary/90": isSelected,
           "text-sidebar-primary-foreground": isSelected,
           "hover:text-sidebar-primary-foreground": isSelected,
         },
@@ -359,6 +370,51 @@ function SidebarButton({
       ) : (
         buttonContent
       )}
+    </Button>
+  );
+}
+
+function SimpleLogoutButton() {
+  const { mutate: logout, isPending: isLoggingOut } = useLogout();
+  const { open } = useShadcnSidebar();
+
+  const handleLogout = () => {
+    try {
+      logout({}, {
+        onSuccess: () => {
+          window.location.href = '/auth/login';
+        },
+        onError: (error: any) => {
+          console.error('Logout error:', error);
+          window.location.href = '/auth/login';
+        }
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      window.location.href = '/auth/login';
+    }
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={handleLogout}
+      disabled={isLoggingOut}
+      className={cn(
+        "w-full",
+        "justify-start",
+        "text-red-600",
+        "hover:text-red-700",
+        "hover:bg-red-50",
+        {
+          "px-2": !open,
+          "px-3": open,
+        }
+      )}
+    >
+      <LogOut className={cn("w-4", "h-4", "mr-2")} />
+      {isLoggingOut ? "Logging out..." : "Logout"}
     </Button>
   );
 }

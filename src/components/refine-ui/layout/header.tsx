@@ -1,5 +1,6 @@
 import { UserAvatar } from "@/components/refine-ui/layout/user-avatar";
 import { ThemeToggle } from "@/components/refine-ui/theme/theme-toggle";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,12 +37,17 @@ function DesktopHeader() {
         "border-border",
         "bg-sidebar",
         "pr-3",
-        "justify-end",
+        "justify-between",
         "z-40"
       )}
     >
-      <ThemeToggle />
-      <UserDropdown />
+      <div className="flex items-center gap-4">
+        <ThemeToggle />
+      </div>
+      <div className="flex items-center gap-4">
+        <UserDropdown />
+        <ProminentLogoutButton />
+      </div>
     </header>
   );
 }
@@ -126,6 +132,25 @@ const UserDropdown = () => {
     return null;
   }
 
+  const handleLogout = () => {
+    try {
+      logout({}, {
+        onSuccess: () => {
+          // Redirect to login page
+          window.location.href = '/auth/login';
+        },
+        onError: (error: any) => {
+          console.error('Logout error:', error);
+          // Still redirect to login page even if there's an error
+          window.location.href = '/auth/login';
+        }
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      window.location.href = '/auth/login';
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -133,9 +158,7 @@ const UserDropdown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          onClick={() => {
-            logout();
-          }}
+          onClick={handleLogout}
         >
           <LogOutIcon
             className={cn("text-destructive", "hover:text-destructive")}
@@ -148,6 +171,40 @@ const UserDropdown = () => {
     </DropdownMenu>
   );
 };
+
+function ProminentLogoutButton() {
+  const { mutate: logout, isPending: isLoggingOut } = useLogout();
+
+  const handleLogout = () => {
+    try {
+      logout({}, {
+        onSuccess: () => {
+          window.location.href = '/auth/login';
+        },
+        onError: (error: any) => {
+          console.error('Logout error:', error);
+          window.location.href = '/auth/login';
+        }
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      window.location.href = '/auth/login';
+    }
+  };
+
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={handleLogout}
+      disabled={isLoggingOut}
+      className="text-red-600 border-red-600 hover:bg-red-50 hover:text-red-700"
+    >
+      <LogOutIcon className="w-4 h-4 mr-2" />
+      {isLoggingOut ? "Logging out..." : "Logout"}
+    </Button>
+  );
+}
 
 Header.displayName = "Header";
 MobileHeader.displayName = "MobileHeader";

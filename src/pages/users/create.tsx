@@ -1,60 +1,37 @@
-
 import { Breadcrumb } from '@/components/refine-ui/layout/breadcrumb'
 import { CreateView } from '@/components/refine-ui/views/create-view'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { useBack, useList } from '@refinedev/core'
+import { useBack } from '@refinedev/core'
 import { useForm } from "@refinedev/react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
 import { Loader2 } from 'lucide-react'
 
-const workoutSchema = z.object({
+const userSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  code: z.string().min(1, 'Code is required'),
-  departmentId: z.number().min(1, 'Department is required'),
-  description: z.string().optional(),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  role: z.enum(['member', 'trainer', 'admin']),
+  image: z.string().optional(),
+  imageCldPubId: z.string().optional(),
 })
 
-type WorkoutFormData = z.infer<typeof workoutSchema>
+type UserFormData = z.infer<typeof userSchema>
 
-interface Department {
-  id: number
-  code: string
-  name: string
-  description?: string
-}
-
-const WorkoutsCreate = () => {
+const UsersCreate = () => {
     const back = useBack()
 
-    const { query: departmentsQuery } = useList<Department>({
-        resource: 'departments',
-        pagination: {
-            pageSize: 100
-        }
-    })
-
-    const departments = departmentsQuery.data?.data || []
-    const departmentsLoading = departmentsQuery.isLoading
-
     const form = useForm({
-        resolver: zodResolver(workoutSchema),
+        resolver: zodResolver(userSchema),
         refineCoreProps: {
-            resource: 'workouts',
+            resource: 'users',
             action: 'create',
         },
-        defaultValues: {
-            name: '',
-            code: '',
-            departmentId: undefined,
-            description: '',
-        }
     })
 
     const {
@@ -68,7 +45,7 @@ const WorkoutsCreate = () => {
         try {
             await onFinish(values)
         } catch (error) {
-            console.log('Error creating workout', error)
+            console.log('Error creating user', error)
         }
     }
 
@@ -76,10 +53,10 @@ const WorkoutsCreate = () => {
         <CreateView>
             <Breadcrumb />
 
-            <h1 className='page-title'>Create New Workout</h1>
+            <h1 className='page-title'>Create New User</h1>
 
             <div className='intro-row'>
-                <p>Add a new workout program to the system.</p>
+                <p>Add a new user to the system with their role and information.</p>
 
                 <Button onClick={back}>
                     Go Back
@@ -92,7 +69,7 @@ const WorkoutsCreate = () => {
                 <Card className='w-full max-w-2xl mx-auto'>
                     <CardHeader className='relative z-10'>
                         <CardTitle className='text-2xl pb-0 font-bold'>
-                            Workout Information
+                            User Information
                         </CardTitle>
                     </CardHeader>
 
@@ -110,11 +87,11 @@ const WorkoutsCreate = () => {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>
-                                                Workout Name <span className='text-orange-600'>*</span>
+                                                Name <span className='text-orange-600'>*</span>
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder='Enter workout name'
+                                                    placeholder='Enter user name'
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -125,15 +102,16 @@ const WorkoutsCreate = () => {
 
                                 <FormField
                                     control={control}
-                                    name='code'
+                                    name='email'
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>
-                                                Workout Code <span className='text-orange-600'>*</span>
+                                                Email <span className='text-orange-600'>*</span>
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder='Enter workout code'
+                                                    type='email'
+                                                    placeholder='Enter email address'
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -144,31 +122,50 @@ const WorkoutsCreate = () => {
 
                                 <FormField
                                     control={control}
-                                    name='departmentId'
+                                    name='password'
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>
-                                                Department <span className='text-orange-600'>*</span>
+                                                Password <span className='text-orange-600'>*</span>
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type='password'
+                                                    placeholder='Enter password (min 6 characters)'
+                                                    defaultValue="ChangeMe123!"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                            <p className="text-xs text-muted-foreground mt-1">
+                                                Default password: "ChangeMe123!" - User can change this on first login
+                                            </p>
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={control}
+                                    name='role'
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Role <span className='text-orange-600'>*</span>
                                             </FormLabel>
                                             <Select
-                                                onValueChange={(value) => field.onChange(Number(value))}
-                                                value={field.value?.toString()}
-                                                disabled={departmentsLoading}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                                defaultValue='member'
                                             >
                                                 <FormControl>
                                                     <SelectTrigger className='w-full'>
-                                                        <SelectValue placeholder='Select a department' />
+                                                        <SelectValue placeholder='Select a role' />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    {departments.map((department) => (
-                                                        <SelectItem
-                                                            value={department.id.toString()}
-                                                            key={department.id}
-                                                        >
-                                                            {department.name} ({department.code})
-                                                        </SelectItem>
-                                                    ))}
+                                                    <SelectItem value='member'>Member</SelectItem>
+                                                    <SelectItem value='trainer'>Trainer</SelectItem>
+                                                    <SelectItem value='admin'>Admin</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />
@@ -178,13 +175,30 @@ const WorkoutsCreate = () => {
 
                                 <FormField
                                     control={control}
-                                    name='description'
+                                    name='image'
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Description</FormLabel>
+                                            <FormLabel>Profile Image URL</FormLabel>
                                             <FormControl>
-                                                <Textarea
-                                                    placeholder='Brief description about the workout'
+                                                <Input
+                                                    placeholder='Enter image URL (optional)'
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={control}
+                                    name='imageCldPubId'
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Cloudinary Public ID</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder='Enter Cloudinary public ID (optional)'
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -198,11 +212,11 @@ const WorkoutsCreate = () => {
                                 <Button type="submit" size="lg" className="w-full">
                                     {isSubmitting ? (
                                         <div className="flex gap-1">
-                                            <span>Creating Workout...</span>
+                                            <span>Creating User...</span>
                                             <Loader2 className="inline-block ml-2 animate-spin" />
                                         </div>
                                     ) : (
-                                        "Create Workout"
+                                        "Create User"
                                     )}
                                 </Button>
                             </form>
@@ -214,4 +228,4 @@ const WorkoutsCreate = () => {
     )
 }
 
-export default WorkoutsCreate
+export default UsersCreate
